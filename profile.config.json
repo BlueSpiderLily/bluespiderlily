@@ -1,0 +1,24 @@
+{
+  "user": "BlueSpiderLily",
+  "featuredRepo": "SVMCheck",
+  "excludeRepos": ["debproject", "bluespiderlily"],
+  "topLanguages": 3,
+  "hideCommits": ["^Merge", "stray", "typo", "^Update README", "^Initial commit"],
+  "svmcheckFallback": { "lines": 17812, "files": 69, "testSuites": 9 },
+  "svmcheckChecks": "2,661",
+  "toolbox": [
+    "C++", "x86-64 ASM", "C", "C#", "Python", "Verilog",
+    "IDA Pro", "Ghidra", "WinDbg", "x64dbg", "ReClass", "Unicorn",
+    "AMD SVM", "Windows kernel", "DMA", "RISC-V",
+    "Vivado", "STM32CubeIDE", "Raspberry Pi 5",
+    "Unix", "Kali Linux", "Git"
+  ],
+  "talks": [
+    { "title": "Gaming the System: Kernel Exploits and the Flaws of Anti-Cheats", "where": "UC Berkeley Honors Symposium", "when": "Apr 2025" }
+  ],
+  "writeups": [
+    "Legacy anti-cheat reverse engineering (PunkBuster)",
+    "Multi-layer anti-tamper crackme walkthroughs"
+  ],
+  "education": { "school": "UC Irvine", "program": "Computer Science & Engineering", "when": "Expected June 2027" }
+}
