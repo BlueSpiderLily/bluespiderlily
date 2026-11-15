@@ -3,7 +3,7 @@
 </div>
 
 <div align="center">
-  <img src="terminal.svg" alt="Terminal output. whoami: noah, low-level systems, security research, reverse engineering. focus: hypervisors (AMD SVM, Windows kernel internals), memory (DMA-based access, FPGA hardware), reverse engineering (anti-tamper and anti-cheat analysis), embedded (bare-metal C on STM32). projects: SVMCheck." width="100%">
+  <img src="terminal.svg" alt="Terminal output. whoami: noah, low-level systems, security research, reverse engineering. focus: hypervisors (AMD SVM, Windows kernel internals), memory (DMA-based access, FPGA hardware), reverse engineering (anti-tamper and client-integrity analysis), embedded (bare-metal C on STM32). projects: SVMCheck." width="100%">
 </div>
 
 <div align="center">
