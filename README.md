@@ -15,3 +15,4 @@
 | Project | What it is |
 | :-- | :-- |
 | [**SVMCheck**](https://github.com/BlueSpiderLily/SVMCheck-showcase) <br> *In progress* | An AMD SVM hypervisor built as a Windows kernel driver. It runs an isolated synthetic guest, handles nested page faults and MSR access in software, and exposes a small administrator-only control interface. The showcase repo has the architecture, design notes and ABI docs. |
+| [**ZotGDB**](https://github.com/BlueSpiderLily/ZotGDB-showcase) <br> *Senior design, team of 3* | An ad-free, OnlineGDB-style Python IDE that runs entirely in the browser and works offline. Python runs in a Web Worker through Pyodide, with a step debugger, an interactive shell and Matplotlib and NumPy support, served from a Raspberry Pi that also logs network and security events. The showcase repo has screenshots and architecture notes. |
