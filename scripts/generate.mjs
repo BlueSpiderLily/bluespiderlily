@@ -41,7 +41,12 @@ if (!languages.length) languages = [{ name: "C++", pct: 95 }, { name: "C", pct: 
 let svm = { ...cfg.svmcheckFallback };
 try {
   const dir = mkdtempSync(join(tmpdir(), "svm-"));
-  execFileSync("git", ["clone", "--depth", "1", "--quiet", `https://github.com/${cfg.user}/${cfg.featuredRepo}.git`, dir], { stdio: "ignore" });
+  // Anonymous clone (no stored credentials, no prompt): a private repo fails here on purpose,
+  // so a local run and the scheduled Action both fall back to the saved numbers in the config.
+  execFileSync("git", ["-c", "credential.helper=", "clone", "--depth", "1", "--quiet", `https://github.com/${cfg.user}/${cfg.featuredRepo}.git`, dir], {
+    stdio: "ignore",
+    env: { ...process.env, GIT_TERMINAL_PROMPT: "0" },
+  });
   const files = execFileSync("git", ["-C", dir, "ls-files"], { encoding: "utf8" }).split("\n").filter((f) => /\.(cpp|h|hpp|asm)$/.test(f));
   let lines = 0;
   for (const f of files) lines += readFileSync(join(dir, f), "utf8").split("\n").length;
@@ -110,7 +115,7 @@ const col1End = y;
 // Column 2: SVMCheck at a glance, recent activity
 {
   const h = 205;
-  body += card(colX(1), GRID_Y, COL, h, `${cfg.featuredRepo} · AMD SVM hypervisor`);
+  body += card(colX(1), GRID_Y, COL, h, `${cfg.featuredRepo}${cfg.featuredStatus ? ` · ${cfg.featuredStatus}` : " · AMD SVM hypervisor"}`);
   const nums = [
     [svm.lines.toLocaleString("en-US"), "lines of code"],
     [String(svm.files), "source files"],
@@ -124,18 +129,33 @@ const col1End = y;
   });
   body += end();
 
-  let ay = GRID_Y + h + GAP;
-  const rowsData = commits.map((c) => ({ ...c, lines: wrap(c.msg, 50).slice(0, 2) }));
-  const ah = 56 + rowsData.reduce((a, r) => a + 24 + r.lines.length * 19, 0) + 8;
-  body += card(colX(1), ay, COL, Math.max(ah, 120), "Recent work");
-  let ry = ay + 66;
-  for (const r of rowsData) {
-    body += `<circle cx="${colX(1) + 28}" cy="${ry - 5}" r="3.5" fill="#4d8dff"/><text x="${colX(1) + 42}" y="${ry}" fill="#7d8794" font-family="${MONO}" font-size="11">${esc(r.date)}</text>`;
-    r.lines.forEach((ln, k) => { body += `<text x="${colX(1) + 42}" y="${ry + 20 + k * 19}" fill="#dfe5ec" font-family="${SANS}" font-size="14">${esc(ln + (k === 1 && wrap(r.msg, 50).length > 2 ? "…" : ""))}</text>`; });
-    ry += 24 + r.lines.length * 19;
+  y = GRID_Y + h;
+  // "Recent work" reads the featured repo's public commits. A private repo has none to read,
+  // so the card is simply left out instead of showing an empty box.
+  if (commits.length) {
+    const ay = y + GAP;
+    const rowsData = commits.map((c) => ({ ...c, lines: wrap(c.msg, 50).slice(0, 2) }));
+    const ah = 56 + rowsData.reduce((a, r) => a + 24 + r.lines.length * 19, 0) + 8;
+    body += card(colX(1), ay, COL, Math.max(ah, 120), "Recent work");
+    let ry = ay + 66;
+    for (const r of rowsData) {
+      body += `<circle cx="${colX(1) + 28}" cy="${ry - 5}" r="3.5" fill="#4d8dff"/><text x="${colX(1) + 42}" y="${ry}" fill="#7d8794" font-family="${MONO}" font-size="11">${esc(r.date)}</text>`;
+      r.lines.forEach((ln, k) => { body += `<text x="${colX(1) + 42}" y="${ry + 20 + k * 19}" fill="#dfe5ec" font-family="${SANS}" font-size="14">${esc(ln + (k === 1 && wrap(r.msg, 50).length > 2 ? "…" : ""))}</text>`; });
+      ry += 24 + r.lines.length * 19;
+    }
+    body += end();
+    y = ay + Math.max(ah, 120);
   }
-  body += end();
-  y = ay + Math.max(ah, 120);
+  // Design notes: short, fixed highlights from the project's design write-up.
+  if (cfg.designNotes && cfg.designNotes.length) {
+    const ny = y + GAP, nh = 56 + cfg.designNotes.length * 30 + 10;
+    body += card(colX(1), ny, COL, nh, "Design notes");
+    cfg.designNotes.forEach((t, i) => {
+      body += `<text x="${colX(1) + 22}" y="${ny + 66 + i * 30}" fill="#c9d1db" font-family="${SANS}" font-size="14.5"><tspan fill="#ff2bd6">›</tspan> ${esc(t)}</text>`;
+    });
+    body += end();
+    y = ny + nh;
+  }
 }
 const col2End = y;
 

@@ -1,10 +1,16 @@
 {
   "user": "BlueSpiderLily",
   "featuredRepo": "SVMCheck",
+  "featuredStatus": "in progress",
+  "designNotes": [
+    "Burst execution: Windows is never the guest",
+    "Fail closed on faults and unknown exits",
+    "Split a 2 MB leaf instead of widening it"
+  ],
   "excludeRepos": ["debproject", "bluespiderlily"],
   "topLanguages": 3,
   "hideCommits": ["^Merge", "stray", "typo", "^Update README", "^Initial commit"],
-  "svmcheckFallback": { "lines": 17812, "files": 69, "testSuites": 9 },
+  "svmcheckFallback": { "lines": 17881, "files": 69, "testSuites": 9 },
   "svmcheckChecks": "2,661",
   "toolbox": [
     "C++", "x86-64 ASM", "C", "C#", "Python", "Verilog",
