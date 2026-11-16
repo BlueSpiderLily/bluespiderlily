@@ -11,6 +11,12 @@
   "topLanguages": 3,
   "hideCommits": ["^Merge", "stray", "typo", "^Update README", "^Initial commit"],
   "svmcheckFallback": { "lines": 17881, "files": 69, "testSuites": 9 },
+  "zotgdb": {
+    "label": "ZotGDB · senior design",
+    "note": "Snapshot of first-party JS, Python, HTML and CSS (vendored libraries excluded), 2026-11-15",
+    "stats": [["7,125", "lines of code"], ["14", "source files"], ["25", "logger tests"], ["13", "commits"]],
+    "points": ["Python in the browser, fully offline", "Step debugger with breakpoints and watches", "Raspberry Pi host with security logging"]
+  },
   "svmcheckChecks": "2,661",
   "toolbox": [
     "C++", "x86-64 ASM", "C", "C#", "Python", "Verilog",

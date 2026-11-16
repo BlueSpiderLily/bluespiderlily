@@ -156,6 +156,22 @@ const col1End = y;
     body += end();
     y = ny + nh;
   }
+  // ZotGDB: fixed snapshot from the config (the project is a team repo, so it is not read live).
+  if (cfg.zotgdb) {
+    y += GAP;
+    const z = cfg.zotgdb, zh = 200 + z.points.length * 30;
+    body += card(colX(1), y, COL, zh, z.label);
+    z.stats.forEach(([n, label], i) => {
+      const nx = colX(1) + 22 + (i % 2) * 188, ny = y + 92 + Math.floor(i / 2) * 58;
+      body += `<text x="${nx}" y="${ny}" fill="url(#name)" font-family="${SANS}" font-size="34" font-weight="800" letter-spacing="-1">${esc(n)}</text>
+<text x="${nx}" y="${ny + 18}" fill="#7d8794" font-family="${MONO}" font-size="11" letter-spacing="1.4">${esc(label.toUpperCase())}</text>`;
+    });
+    z.points.forEach((p, i) => {
+      body += `<text x="${colX(1) + 22}" y="${y + 206 + i * 30}" fill="#c9d1db" font-family="${SANS}" font-size="14.5"><tspan fill="#ff2bd6">›</tspan> ${esc(p)}</text>`;
+    });
+    body += end();
+    y += zh;
+  }
 }
 const col2End = y;
 
@@ -186,7 +202,7 @@ const col2End = y;
 
 const H = Math.max(col1End, col2End, col3End) + PAD;
 // even out: stretch nothing; just size the canvas to the tallest column
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Dashboard. Languages: ${languages.map((l) => `${l.name} ${l.pct.toFixed(0)} percent`).join(", ")}. ${cfg.featuredRepo}: ${svm.lines} lines of code across ${svm.files} source files and ${svm.testSuites} test suites. Talk at ${cfg.talks[0].where}. Toolbox: ${cfg.toolbox.join(", ")}.">
+const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Dashboard. Languages: ${languages.map((l) => `${l.name} ${l.pct.toFixed(0)} percent`).join(", ")}. ${cfg.featuredRepo}: ${svm.lines} lines of code across ${svm.files} source files and ${svm.testSuites} test suites. Talk at ${cfg.talks[0].where}. ${cfg.zotgdb ? `${cfg.zotgdb.label}: ${cfg.zotgdb.stats.map(([n, l]) => `${n} ${l}`).join(", ")}. ` : ""}Toolbox: ${cfg.toolbox.join(", ")}.">
 <defs>
 <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4d8dff"/><stop offset="1" stop-color="#ff2bd6"/></linearGradient>
 <linearGradient id="name" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7aa8ff"/><stop offset="1" stop-color="#ff5be0"/></linearGradient>
